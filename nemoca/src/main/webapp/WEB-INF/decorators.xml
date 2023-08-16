@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<decorators defaultdir="/decorator">
+	<decorator name="decorator" page="view.jsp">
+		<pattern>/views/display/*</pattern>
+	</decorator>
+	<excludes>
+		<pattern>/hello/execlude.jsp</pattern>
+		<pattern>/news/execlude.jsp</pattern>
+	</excludes>
+</decorators>

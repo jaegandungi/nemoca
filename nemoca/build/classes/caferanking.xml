@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="caferanking">
+	<select id="cafeRankingList" parameterType="string" resultType="caferanking">
+		SELECT C.*
+		  FROM (
+		         SELECT C.*
+		              , RANK() OVER(ORDER BY C.LIKE_COUNT DESC, C.C_NAME) AS CAFE_LIKE_RANK
+		           FROM (
+		                  SELECT C_NO
+		                       , C_NAME
+		                       , C_ADDR
+		                       , C_LOC
+		                       , C_TEL
+		                       , C_IMG1
+		                       , C_IMG2
+		                       , C_IMG3
+		                       , C_MENU1
+		                       , C_MENU2
+		                       , C_MENU3
+		                       , C_JOIN_DATE
+		                       , C_DEL
+		                       , C_DEL_DATE
+		                       , C_READCOUNT
+		                       , USER_ID
+		                       , NVL((
+		                               SELECT COUNT(1)
+		                                 FROM CAFE_LIKE
+		                                WHERE C_NO = CAFE.C_NO
+		                             ),0) AS LIKE_COUNT
+		                    FROM CAFE
+		                ) C
+		       ) C
+		 WHERE C.CAFE_LIKE_RANK &lt;= 10 <!-- &lt; : < 와 같다 -->
+		 ORDER BY C.LIKE_COUNT DESC, C.C_NAME
+	</select>
+</mapper>
